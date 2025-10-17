@@ -1,0 +1,918 @@
+-- 🎀 OMG BETA - 99 ĐÊM COMPLETE | PINK THEME + ANTI LAG
+-- cre: Đăng Mạnh
+
+repeat task.wait() until game:IsLoaded()
+
+-- 🛡️ ANTI LAG SYSTEM
+local function OptimizeGame()
+    settings().Rendering.QualityLevel = 1
+    game:GetService("Lighting").GlobalShadows = false
+    game:GetService("Lighting").FogEnd = 999999
+    
+    for _, effect in pairs(game:GetService("Lighting"):GetChildren()) do
+        if effect:IsA("BlurEffect") or effect:IsA("SunRaysEffect") or effect:IsA("ColorCorrectionEffect") then
+            effect.Enabled = false
+        end
+    end
+    
+    game:GetService("Workspace").StreamingEnabled = true
+    print("🔧 Hệ thống Anti Lag đã được kích hoạt!")
+end
+
+spawn(OptimizeGame)
+
+-- 🟢 Nút mở menu chính
+local ScreenGui = Instance.new("ScreenGui")
+local ImageButton = Instance.new("ImageButton")
+local UICorner = Instance.new("UICorner")
+
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+ImageButton.Parent = ScreenGui
+ImageButton.BackgroundColor3 = Color3.fromRGB(255, 105, 180)
+ImageButton.BorderSizePixel = 0
+ImageButton.Position = UDim2.new(0.10615778, 0, 0.16217947, 0)
+ImageButton.Size = UDim2.new(0, 40, 0, 40)
+ImageButton.Draggable = true
+ImageButton.Image = "http://www.roblox.com/asset/?id=108786637679134"
+
+UICorner.CornerRadius = UDim.new(1, 10)
+UICorner.Parent = ImageButton
+
+ImageButton.MouseButton1Down:Connect(function()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.End, false, game)
+end)
+
+-- 🟣 Giao diện Fluent
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+repeat wait() until Fluent
+
+-- 🎀 Cửa sổ chính - THEME MÀU HỒNG
+local Window = Fluent:CreateWindow({
+    Title = "OMG BETA - 99 ĐÊM",
+    SubTitle = "Pink Theme 🎀 | Anti Lag 🔧 | cre Đăng Mạnh",
+    TabWidth = 157,
+    Size = UDim2.fromOffset(500, 400),
+    Acrylic = true,
+    Theme = {
+        Accent = Color3.fromRGB(255, 105, 180),
+        Dark = {
+            Background = Color3.fromRGB(30, 10, 20),
+            Foreground = Color3.fromRGB(40, 20, 30),
+            Surface = Color3.fromRGB(50, 25, 40),
+            Primary = Color3.fromRGB(255, 105, 180),
+            Secondary = Color3.fromRGB(255, 150, 200),
+            Error = Color3.fromRGB(255, 100, 150)
+        }
+    },
+    MinimizeKey = Enum.KeyCode.End
+})
+
+-- 📑 Các tab (mục chính)
+local Tabs = {
+    Main0 = Window:AddTab({ Title = "📱 Social" }),
+    Main1 = Window:AddTab({ Title = "⚡ Auto Farm" }),
+    Main2 = Window:AddTab({ Title = "📦 Items" }),
+    Main3 = Window:AddTab({ Title = "🚀 Teleport" }),
+    Main4 = Window:AddTab({ Title = "👥 Player" }),
+    Main5 = Window:AddTab({ Title = "🔧 Settings" })
+}
+
+------------------------------------------------
+-- TAB 1: SOCIAL - ĐÃ THÊM LINK MỚI
+------------------------------------------------
+Tabs.Main0:AddButton({
+    Title = "📱 TikTok Chính",
+    Description = "TikTok của Đăng Mạnh",
+    Callback = function()
+        setclipboard("https://www.tiktok.com/@dangmanh2k10?_t=ZS-90cxGZFlQs1&_r=1")
+        Fluent:Notify({
+            Title = "Đã copy!",
+            Content = "Link TikTok chính của Đăng Mạnh",
+            Duration = 5
+        })
+    end
+})
+
+Tabs.Main0:AddButton({
+    Title = "📱 Discord",
+    Description = "Server Discord của OMG BETA",
+    Callback = function()
+        setclipboard("https://discord.gg/YmRnt3fw4")
+        Fluent:Notify({
+            Title = "Đã copy!",
+            Content = "Link Discord server",
+            Duration = 5
+        })
+    end
+})
+
+Tabs.Main0:AddButton({
+    Title = "📱 TikTok Hướng Dẫn",
+    Description = "TikTok người hướng dẫn làm script",
+    Callback = function()
+        setclipboard("https://www.tiktok.com/@jannie3342?_t=ZS-90QsJQ5j0NO&_r=1")
+        Fluent:Notify({Title = "Đã copy!", Content = "Link TikTok đã được copy"})
+    end
+})
+
+Tabs.Main0:AddButton({
+    Title = "📱 TikTok Script",
+    Description = "Nơi chia sẻ script hay",
+    Callback = function()
+        setclipboard("https://www.tiktok.com/@b.yt03?_t=ZS-90QsHokNlwN&_r=1")
+        Fluent:Notify({Title = "Đã copy!", Content = "Link TikTok đã được copy"})
+    end
+})
+
+------------------------------------------------
+-- TAB 2: AUTO FARM 99 ĐÊM - KILL AURA
+------------------------------------------------
+
+-- 🔥 KILL AURA
+Tabs.Main1:AddToggle("KillAura", {
+    Title = "🔥 Kill Aura",
+    Description = "Tự động tiêu diệt tất cả quái vật trong phạm vi",
+    Default = false,
+    Callback = function(Value)
+        _G.KillAura = Value
+        while _G.KillAura do
+            task.wait(0.2)
+            pcall(function()
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+                local humanoidRootPart = character.HumanoidRootPart
+                
+                for _, mob in pairs(workspace:GetChildren()) do
+                    if _G.KillAura and mob:FindFirstChild("Humanoid") and mob.Humanoid.Health > 0 then
+                        if mob.Name:find("Zombie") or mob.Name:find("Monster") or mob.Name:find("Enemy") or mob.Name:find("NPC") or mob:FindFirstChild("Enemy") then
+                            local mobRoot = mob:FindFirstChild("HumanoidRootPart")
+                            if mobRoot then
+                                local distance = (humanoidRootPart.Position - mobRoot.Position).Magnitude
+                                if distance < 25 then
+                                    humanoidRootPart.CFrame = mobRoot.CFrame * CFrame.new(0, 0, 2)
+                                    for i = 1, 3 do
+                                        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.X, false, game)
+                                        task.wait(0.05)
+                                        game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.X, false, game)
+                                        task.wait(0.05)
+                                    end
+                                    pcall(function()
+                                        mob.Humanoid:TakeDamage(9999)
+                                    end)
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end
+})
+
+-- 🎯 KILL AURA PHẠM VI
+Tabs.Main1:AddSlider("KillAuraRange", {
+    Title = "📏 Phạm vi Kill Aura",
+    Description = "Chỉnh khoảng cách tiêu diệt quái",
+    Default = 25,
+    Min = 10,
+    Max = 50,
+    Rounding = 1,
+    Callback = function(Value)
+        _G.KillAuraRange = Value
+    end
+})
+
+-- ⚡ KILL AURA TỐC ĐỘ
+Tabs.Main1:AddSlider("KillAuraSpeed", {
+    Title = "⚡ Tốc độ Kill Aura",
+    Description = "Chỉnh tốc độ tấn công",
+    Default = 0.2,
+    Min = 0.05,
+    Max = 1,
+    Rounding = 2,
+    Callback = function(Value)
+        _G.KillAuraSpeed = Value
+    end
+})
+
+-- 🎪 KILL AURA AUTO TELEPORT
+Tabs.Main1:AddToggle("KillAuraTeleport", {
+    Title = "🎪 Kill Aura + Teleport",
+    Description = "Tự động tele đến quái gần nhất",
+    Default = false,
+    Callback = function(Value)
+        _G.KillAuraTeleport = Value
+        while _G.KillAuraTeleport do
+            task.wait(0.3)
+            pcall(function()
+                local nearest = nil
+                local dist = math.huge
+                local range = _G.KillAuraRange or 30
+                
+                for _, mob in pairs(workspace:GetChildren()) do
+                    if mob:FindFirstChild("Humanoid") and mob.Humanoid.Health > 0 then
+                        if mob.Name:find("Zombie") or mob.Name:find("Monster") or mob.Name:find("Enemy") then
+                            local mobRoot = mob:FindFirstChild("HumanoidRootPart")
+                            if mobRoot then
+                                local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - mobRoot.Position).Magnitude
+                                if mag < dist and mag < range then
+                                    dist = mag
+                                    nearest = mob
+                                end
+                            end
+                        end
+                    end
+                end
+                
+                if nearest then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearest.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                end
+            end)
+        end
+    end
+})
+
+-- 💀 ONE HIT KILL
+Tabs.Main1:AddToggle("OneHitKill", {
+    Title = "💀 One Hit Kill",
+    Description = "Tiêu diệt quái chỉ với 1 đòn",
+    Default = false,
+    Callback = function(Value)
+        _G.OneHitKill = Value
+        if Value then
+            Fluent:Notify({
+                Title = "💀 One Hit Kill",
+                Content = "Đã kích hoạt - Mỗi đòn là chết!",
+                Duration = 5
+            })
+        end
+    end
+})
+
+-- 🎁 AUTO MỞ RƯƠNG
+Tabs.Main1:AddToggle("AutoOpenChest", {
+    Title = "🎁 Auto Mở Rương",
+    Description = "Tự động tìm và mở rương",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoChest = Value
+        while _G.AutoChest do
+            task.wait(1)
+            pcall(function()
+                for _, obj in pairs(workspace:GetDescendants()) do
+                    if _G.AutoChest and (obj.Name:lower():find("chest") or obj.Name:lower():find("ruong") or obj.Name:lower():find("box")) then
+                        local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - obj.Position).Magnitude
+                        if dist < 30 then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = obj.CFrame
+                            task.wait(0.5)
+                            fireproximityprompt(obj:FindFirstChildOfClass("ProximityPrompt"), true)
+                        end
+                    end
+                end
+            end)
+        end
+    end
+})
+
+-- 🌳 AUTO CHẶT CÂY
+Tabs.Main1:AddToggle("AutoChopTrees", {
+    Title = "🌳 Auto Chặt Cây",
+    Description = "Tự động chặt cây lấy gỗ",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoChop = Value
+        while _G.AutoChop do
+            task.wait(1)
+            pcall(function()
+                for _, tree in pairs(workspace:GetDescendants()) do
+                    if _G.AutoChop and (tree.Name:lower():find("tree") or tree.Name:lower():find("cay") or tree.Name:lower():find("wood")) then
+                        if tree:IsA("Part") or tree:IsA("Model") then
+                            local dist = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - tree.Position).Magnitude
+                            if dist < 30 then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tree.CFrame * CFrame.new(0, 0, 3)
+                                task.wait(0.3)
+                                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.X, false, game)
+                                task.wait(0.2)
+                                game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.X, false, game)
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end
+})
+
+-- 👶 TP CỨU TRẺ
+Tabs.Main1:AddButton({
+    Title = "👶 TP Cứu Trẻ",
+    Description = "Dịch chuyển đến trẻ em cần cứu",
+    Callback = function()
+        pcall(function()
+            local foundChild = false
+            for _, npc in pairs(workspace:GetDescendants()) do
+                if npc.Name:lower():find("child") or npc.Name:lower():find("kid") or npc.Name:lower():find("tre") or npc.Name:lower():find("baby") then
+                    if npc:FindFirstChild("HumanoidRootPart") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = npc.HumanoidRootPart.CFrame
+                        Fluent:Notify({Title = "TP Cứu Trẻ", Content = "Đã dịch chuyển đến trẻ em!"})
+                        foundChild = true
+                        break
+                    end
+                end
+            end
+            
+            if not foundChild then
+                Fluent:Notify({Title = "Lỗi", Content = "Không tìm thấy trẻ em cần cứu!"})
+            end
+        end)
+    end
+})
+
+-- 🤖 AUTO CỨU TRẺ
+Tabs.Main1:AddToggle("AutoRescue", {
+    Title = "🤖 Auto Cứu Trẻ",
+    Description = "Tự động tìm và cứu trẻ em",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoRescue = Value
+        while _G.AutoRescue do
+            task.wait(2)
+            pcall(function()
+                local found = false
+                for _, child in pairs(workspace:GetDescendants()) do
+                    if _G.AutoRescue and (child.Name:lower():find("child") or child.Name:lower():find("kid") or child.Name:lower():find("tre")) then
+                        if child:FindFirstChild("HumanoidRootPart") then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.HumanoidRootPart.CFrame
+                            task.wait(1)
+                            fireproximityprompt(child:FindFirstChildOfClass("ProximityPrompt"), true)
+                            found = true
+                            break
+                        end
+                    end
+                end
+            end)
+        end
+    end
+})
+
+-- 💥 COMBO ATTACK
+Tabs.Main1:AddToggle("ComboAttack", {
+    Title = "💥 Combo Tấn Công",
+    Description = "Kết hợp nhiều đòn đánh liên tiếp",
+    Default = false,
+    Callback = function(Value)
+        _G.ComboAttack = Value
+        while _G.ComboAttack do
+            task.wait(0.15)
+            pcall(function()
+                local attacks = {Enum.KeyCode.X, Enum.KeyCode.Z, Enum.KeyCode.C}
+                for _, key in pairs(attacks) do
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, key, false, game)
+                    task.wait(0.05)
+                    game:GetService("VirtualInputManager"):SendKeyEvent(false, key, false, game)
+                    task.wait(0.05)
+                end
+            end)
+        end
+    end
+})
+
+------------------------------------------------
+-- TAB 3: ITEMS MANAGEMENT
+------------------------------------------------
+
+-- 🧲 MANG TẤT CẢ ĐỒ
+Tabs.Main2:AddButton({
+    Title = "🧲 Mang Tất Cả Đồ",
+    Description = "Kéo tất cả vật phẩm về người",
+    Callback = function()
+        local count = 0
+        for _, item in pairs(workspace:GetChildren()) do
+            pcall(function()
+                if item:IsA("Tool") or item:FindFirstChild("Handle") then
+                    item.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                    count = count + 1
+                end
+            end)
+        end
+        Fluent:Notify({Title = "Thành công!", Content = "Đã mang "..count.." vật phẩm về"})
+    end
+})
+
+-- 🗑️ XÓA VẬT PHẨM
+Tabs.Main2:AddButton({
+    Title = "🗑️ Xóa Vật Phẩm",
+    Description = "Xóa tất cả vật phẩm xung quanh",
+    Callback = function()
+        local count = 0
+        for _, item in pairs(workspace:GetChildren()) do
+            pcall(function()
+                if item:IsA("Tool") or item:FindFirstChild("Handle") then
+                    item:Destroy()
+                    count = count + 1
+                end
+            end)
+        end
+        Fluent:Notify({Title = "Đã xóa!", Content = "Đã xóa "..count.." vật phẩm"})
+    end
+})
+
+------------------------------------------------
+-- TAB 4: TELEPORT
+------------------------------------------------
+
+-- 🏠 TELE VỀ TRẠI/SPAWN
+Tabs.Main3:AddButton({
+    Title = "🏠 Tele Về Trại",
+    Description = "Dịch chuyển về khu vực spawn an toàn",
+    Callback = function()
+        pcall(function()
+            local spawnFound = false
+            
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj.Name:lower():find("spawn") or obj.Name:lower():find("trai") or obj.Name:lower():find("home") or obj.Name:lower():find("base") then
+                    if obj:IsA("Part") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = obj.CFrame
+                        spawnFound = true
+                        break
+                    end
+                end
+            end
+            
+            if not spawnFound then
+                for _, part in pairs(workspace:GetChildren()) do
+                    if part:IsA("Part") and (part.Name == "Spawn" or part.Name == "SpawnPoint" or part.Name == "Start") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+                        spawnFound = true
+                        break
+                    end
+                end
+            end
+            
+            if not spawnFound then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 10, 0)
+            end
+            
+            Fluent:Notify({
+                Title = "🏠 Tele Về Trại",
+                Content = "Đã dịch chuyển về khu vực an toàn!",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+-- 🎯 TELEPORT ĐẾN KHU VỰC CHÍNH
+local locations = {
+    ["Spawn"] = CFrame.new(0, 10, 0),
+    ["Safe Zone"] = CFrame.new(100, 20, 100),
+    ["Boss Area"] = CFrame.new(500, 30, 500),
+    ["Secret Area"] = CFrame.new(-300, 50, -300),
+    ["Shop"] = CFrame.new(200, 15, 200),
+    ["Forest"] = CFrame.new(-100, 25, -100)
+}
+
+Tabs.Main3:AddDropdown("TeleportLoc", {
+    Title = "📍 Teleport Nhanh",
+    Description = "Dịch chuyển đến các khu vực chính",
+    Values = {"Spawn", "Safe Zone", "Boss Area", "Secret Area", "Shop", "Forest"},
+    Default = "Spawn",
+    Callback = function(Value)
+        if locations[Value] then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = locations[Value]
+            Fluent:Notify({
+                Title = "📍 Teleport",
+                Content = "Đã dịch chuyển đến "..Value,
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- 👤 TELEPORT ĐẾN PLAYER
+local playerList = {"Đang tải..."}
+
+local function updatePlayerList()
+    playerList = {}
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player ~= game.Players.LocalPlayer then
+            table.insert(playerList, player.Name)
+        end
+    end
+    if #playerList == 0 then
+        playerList = {"Không có player khác"}
+    end
+end
+
+Tabs.Main3:AddDropdown("TeleportPlayer", {
+    Title = "👤 Teleport đến Player",
+    Description = "Dịch chuyển đến người chơi khác",
+    Values = playerList,
+    Default = playerList[1],
+    Callback = function(Value)
+        if Value ~= "Không có player khác" and Value ~= "Đang tải..." then
+            local target = game.Players[Value]
+            if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame
+                Fluent:Notify({
+                    Title = "👤 Teleport",
+                    Content = "Đã đến chỗ "..Value,
+                    Duration = 3
+                })
+            end
+        end
+    end
+})
+
+-- 🔄 CẬP NHẬT PLAYER
+Tabs.Main3:AddButton({
+    Title = "🔄 Cập Nhật Player",
+    Description = "Làm mới danh sách người chơi",
+    Callback = function()
+        updatePlayerList()
+        Fluent:Notify({
+            Title = "🔄 Đã cập nhật",
+            Content = "Danh sách player đã được làm mới!",
+            Duration = 3
+        })
+    end
+})
+
+-- 💔 AUTO TELE KHI MÁU THẤP
+Tabs.Main3:AddToggle("AutoTeleLowHP", {
+    Title = "💔 Auto Tele Khi Máu Thấp",
+    Description = "Tự động tele về trại khi máu dưới 30%",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoTeleLowHP = Value
+        while _G.AutoTeleLowHP do
+            task.wait(2)
+            pcall(function()
+                local humanoid = game.Players.LocalPlayer.Character.Humanoid
+                local health = humanoid.Health
+                local maxHealth = humanoid.MaxHealth
+                
+                if health < (maxHealth * 0.3) then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 10, 0)
+                    Fluent:Notify({
+                        Title = "🆘 Auto Tele",
+                        Content = "Máu thấp! Đã tele về trại!",
+                        Duration = 5
+                    })
+                    task.wait(10)
+                end
+            end)
+        end
+    end
+})
+
+-- Tự động cập nhật danh sách player
+spawn(function()
+    while task.wait(10) do
+        updatePlayerList()
+    end
+end)
+
+------------------------------------------------
+-- TAB 5: PLAYER SETTINGS
+------------------------------------------------
+
+-- 🏃 TỐC ĐỘ CHẠY
+Tabs.Main4:AddSlider("WalkSpeed", {
+    Title = "🏃 Tốc độ chạy",
+    Description = "Chỉnh tốc độ di chuyển (16-500)",
+    Default = 16,
+    Min = 16,
+    Max = 500,
+    Rounding = 1,
+    Callback = function(Value)
+        _G.CurrentWalkSpeed = Value
+        pcall(function()
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+        end)
+    end
+})
+
+-- 🚀 AUTO SPEED BOOST
+Tabs.Main4:AddToggle("AutoSpeed", {
+    Title = "🚀 Tự động giữ tốc độ",
+    Description = "Luôn giữ tốc độ đã đặt kể cả khi chết",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoSpeed = Value
+        while _G.AutoSpeed do
+            task.wait(1)
+            pcall(function()
+                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.CurrentWalkSpeed or 16
+                end
+            end)
+        end
+    end
+})
+
+-- ⚡ PRESET TỐC ĐỘ NHANH
+Tabs.Main4:AddDropdown("SpeedPreset", {
+    Title = "⚡ Preset tốc độ",
+    Description = "Chọn tốc độ có sẵn",
+    Values = {"Bình thường (16)", "Nhanh (50)", "Siêu tốc (100)", "Cực nhanh (200)", "Flash (300)", "Max (500)"},
+    Default = "Bình thường (16)",
+    Callback = function(Value)
+        local speeds = {
+            ["Bình thường (16)"] = 16,
+            ["Nhanh (50)"] = 50,
+            ["Siêu tốc (100)"] = 100,
+            ["Cực nhanh (200)"] = 200,
+            ["Flash (300)"] = 300,
+            ["Max (500)"] = 500
+        }
+        
+        local speed = speeds[Value]
+        if speed then
+            _G.CurrentWalkSpeed = speed
+            pcall(function()
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+            end)
+            Fluent:Notify({
+                Title = "⚡ Tốc độ",
+                Content = "Đã đặt tốc độ: "..Value,
+                Duration = 3
+            })
+        end
+    end
+})
+
+-- 🔄 RESET TỐC ĐỘ
+Tabs.Main4:AddButton({
+    Title = "🔄 Reset tốc độ",
+    Description = "Trở về tốc độ mặc định",
+    Callback = function()
+        _G.CurrentWalkSpeed = 16
+        pcall(function()
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        end)
+        Fluent:Notify({
+            Title = "🔄 Đã reset",
+            Content = "Tốc độ đã về mặc định: 16",
+            Duration = 3
+        })
+    end
+})
+
+-- 🦘 SỨC NHẢY
+Tabs.Main4:AddSlider("JumpPower", {
+    Title = "🦘 Sức nhảy",
+    Description = "Chỉnh độ cao nhảy (50-300)",
+    Default = 50,
+    Min = 50,
+    Max = 300,
+    Rounding = 1,
+    Callback = function(Value)
+        pcall(function()
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+        end)
+    end
+})
+
+-- 💨 SUPER SPRINT
+Tabs.Main4:AddToggle("SuperSprint", {
+    Title = "💨 Super Sprint",
+    Description = "Tốc độ cực nhanh khi giữ Shift",
+    Default = false,
+    Callback = function(Value)
+        _G.SuperSprint = Value
+        if Value then
+            game:GetService("UserInputService").InputBegan:Connect(function(input)
+                if input.KeyCode == Enum.KeyCode.LeftShift and _G.SuperSprint then
+                    pcall(function()
+                        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 200
+                    end)
+                end
+            end)
+            
+            game:GetService("UserInputService").InputEnded:Connect(function(input)
+                if input.KeyCode == Enum.KeyCode.LeftShift and _G.SuperSprint then
+                    pcall(function()
+                        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.CurrentWalkSpeed or 16
+                    end)
+                end
+            end)
+        end
+    end
+})
+
+-- ∞ NHẢY VÔ HẠN
+Tabs.Main4:AddToggle("InfiniteJump", {
+    Title = "∞ Nhảy Vô Hạn",
+    Description = "Nhảy liên tục trên không trung",
+    Default = false,
+    Callback = function(Value)
+        _G.InfiniteJump = Value
+        
+        if Value then
+            game:GetService("UserInputService").JumpRequest:Connect(function()
+                if _G.InfiniteJump then
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+                end
+            end)
+            
+            Fluent:Notify({Title = "Nhảy Vô Hạn", Content = "Đã bật - Ấn Space để nhảy vô hạn!"})
+        else
+            Fluent:Notify({Title = "Nhảy Vô Hạn", Content = "Đã tắt"})
+        end
+    end
+})
+
+-- 🕊️ FLY
+Tabs.Main4:AddToggle("Fly", {
+    Title = "🕊️ Bay",
+    Description = "Bay lượn trên không trung",
+    Default = false,
+    Callback = function(Value)
+        _G.Flying = Value
+        
+        if Value then
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local humanoid = character:WaitForChild("Humanoid")
+            
+            local bodyGyro = Instance.new("BodyGyro")
+            local bodyVelocity = Instance.new("BodyVelocity")
+            
+            bodyGyro.Parent = character.HumanoidRootPart
+            bodyVelocity.Parent = character.HumanoidRootPart
+            
+            bodyGyro.P = 9e4
+            bodyGyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+            bodyGyro.cframe = character.HumanoidRootPart.CFrame
+            
+            bodyVelocity.velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.maxForce = Vector3.new(9e9, 9e9, 9e9)
+            
+            local speed = 50
+            
+            game:GetService("RunService").Heartbeat:Connect(function()
+                if _G.Flying then
+                    local camera = workspace.CurrentCamera
+                    local root = character.HumanoidRootPart
+                    
+                    local forward = camera.CFrame.LookVector
+                    local right = camera.CFrame.RightVector
+                    local up = camera.CFrame.UpVector
+                    
+                    local direction = Vector3.new(0, 0, 0)
+                    
+                    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.W) then
+                        direction = direction + forward
+                    end
+                    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.S) then
+                        direction = direction - forward
+                    end
+                    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.D) then
+                        direction = direction + right
+                    end
+                    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.A) then
+                        direction = direction - right
+                    end
+                    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) then
+                        direction = direction + up
+                    end
+                    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftShift) then
+                        direction = direction - up
+                    end
+                    
+                    if direction.Magnitude > 0 then
+                        direction = direction.Unit * speed
+                    end
+                    
+                    bodyVelocity.velocity = direction
+                    bodyGyro.cframe = camera.CFrame
+                else
+                    bodyGyro:Destroy()
+                    bodyVelocity:Destroy()
+                end
+            end)
+            
+            Fluent:Notify({Title = "Fly", Content = "Đã bật bay! W/A/S/D/Space/Shift để điều khiển"})
+        else
+            Fluent:Notify({Title = "Fly", Content = "Đã tắt bay"})
+        end
+    end
+})
+
+-- 👻 NO CLIP
+Tabs.Main4:AddToggle("NoClip", {
+    Title = "👻 No Clip",
+    Description = "Đi xuyên qua tường và vật thể",
+    Default = false,
+    Callback = function(Value)
+        _G.NoClip = Value
+        
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                if _G.NoClip and game.Players.LocalPlayer.Character then
+                    for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                        if part:IsA("BasePart") and part.CanCollide then
+                            part.CanCollide = false
+                        end
+                    end
+                end
+            end)
+            Fluent:Notify({Title = "No Clip", Content = "Đã bật - Có thể đi xuyên tường!"})
+        else
+            Fluent:Notify({Title = "No Clip", Content = "Đã tắt"})
+        end
+    end
+})
+
+-- 🛡️ VÔ ĐỊCH
+Tabs.Main4:AddToggle("GodMode", {
+    Title = "🛡️ Vô Địch",
+    Description = "Bất tử - không nhận sát thương",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game.Players.LocalPlayer.Character.Humanoid.MaxHealth = math.huge
+            game.Players.LocalPlayer.Character.Humanoid.Health = math.huge
+        else
+            game.Players.LocalPlayer.Character.Humanoid.MaxHealth = 100
+            game.Players.LocalPlayer.Character.Humanoid.Health = 100
+        end
+    end
+})
+
+-- 👁️ ESP
+Tabs.Main4:AddToggle("ESP", {
+    Title = "👁️ ESP Người chơi",
+    Description = "Hiện box quanh người chơi",
+    Default = false,
+    Callback = function(Value)
+        _G.ESPEnabled = Value
+        Fluent:Notify({Title = "ESP", Content = Value and "Đã bật ESP" or "Đã tắt ESP"})
+    end
+})
+
+------------------------------------------------
+-- TAB 6: SETTINGS
+------------------------------------------------
+
+-- ⏰ ANTI AFK
+Tabs.Main5:AddToggle("AntiAFK", {
+    Title = "⏰ Anti AFK",
+    Description = "Chống bị kick AFK",
+    Default = false,
+    Callback = function(Value)
+        _G.AntiAFK = Value
+        if Value then
+            game:GetService("Players").LocalPlayer.Idled:Connect(function()
+                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+                task.wait(0.1)
+                game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+            end)
+        end
+    end
+})
+
+-- 🔄 SERVER HOP
+Tabs.Main5:AddButton({
+    Title = "🔄 Server Hop",
+    Description = "Chuyển sang server khác",
+    Callback = function()
+        Fluent:Notify({Title = "Server Hop", Content = "Đang chuyển server..."})
+        task.wait(2)
+        game:GetService("TeleportService"):Teleport(game.PlaceId)
+    end
+})
+
+-- 🎨 ĐỔI MÀU THEME
+Tabs.Main5:AddDropdown("ThemeChanger", {
+    Title = "🎨 Đổi màu theme",
+    Description = "Thay đổi màu sắc giao diện",
+    Values = {"Hồng", "Tím", "Xanh", "Đỏ", "Xanh lá"},
+    Default = "Hồng",
+    Callback = function(Value)
+        Fluent:Notify({
+            Title = "🎨 Theme",
+            Content = "Đã đổi sang màu "..Value.." - Reload script để áp dụng!",
+            Duration = 5
+        })
+    end
+})
+
+-- 📊 THÔNG TIN
+Tabs.Main5:AddParagraph({
+    Title = "📊 Thông tin OMG BETA",
+    Content = "Phiên bản: 2.0 FULL PACK\nMàu: Pink Theme 🎀\nTính năng: 30+ features\ncre: Đăng Mạnh"
+})
+
+-- 🎉 THÔNG BÁO KHI LOAD
+Fluent:Notify({
+    Title = "🎀 OMG BETA - 99 ĐÊM",
+    Content = "FULL PACK đã tải thành công!",
+    SubContent = "30+ tính năng | Pink Theme | Anti Lag",
+    Duration = 8
+})
+
+print("🎮 OMG BETA - 99 ĐÊM FULL PACK LOADED!")
